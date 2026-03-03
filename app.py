@@ -7,19 +7,19 @@ This is a temporary script file.
 
 from fastapi import FastAPI, Request, Form
 from fastapi.responses import HTMLResponse
-
 from fastapi.templating import Jinja2Templates
 
 from transformers import pipeline, AutoTokenizer, AutoModelForCausalLM
+
 import torch
 
 
-# Initialize FastAPI app
+# initialize FastAPI app
 app = FastAPI(title="LLM FastAPI Service", version="1.0")
 
 # Model configuration
-MODEL_NAME = "gpt2-medium"  # Replace with a larger model if needed
-#MODEL_NAME = GPT2LMHeadModel.from_pretrained('gpt2')
+MODEL_NAME = "gpt2-medium"  # gpt2, gpt2-medium, gpt2-large
+
 device = 0 if torch.cuda.is_available() else -1
 
 # Load model and tokenizer
@@ -32,14 +32,17 @@ generator = pipeline("text-generation", model=model, tokenizer=tokenizer, device
 
 templates = Jinja2Templates(directory="static")
 
-
+#backend for the landing page
 @app.get("/", response_class=HTMLResponse)
 async def form_page(request: Request):
     """Serve the HTML form."""
     return templates.TemplateResponse("index.html", {"request": request})
 
 
-
+#backend for the graph from page
+@app.get("/graph", response_class=HTMLResponse)
+async def graph_page(request: Request):
+    return templates.TemplateResponse("item_prices.html", {"request":request})
 
 
 @app.post("/generate", response_class=HTMLResponse)
