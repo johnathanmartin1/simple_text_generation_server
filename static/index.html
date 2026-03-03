@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>LLM Text Generator</title>
+</head>
+<body>
+    <h1>Text Generator</h1>
+    <form action="/generate" method="post">
+        <label for="user_input">Enter your prompt:</label><br>
+        <textarea id="user_input" name="user_input" rows="4" cols="50">{{ user_input or '' }}</textarea><br><br>
+        <input type="submit" value="Generate">
+    </form>
+
+    {% if generated_text %}
+        <h2>Generated Output:</h2>
+        <p>{{ generated_text }}</p>
+    {% endif %}
+</body>
+</html>
